@@ -2,6 +2,8 @@
     'use strict';
 
     const tiles = document.querySelectorAll('.square');
+    const overlay = document.querySelector('.overlay');
+    const gameOverMessage = document.querySelector('.game-over-message');
 
     const gameMap = {
         "x-1-1": [0,0],
@@ -24,9 +26,6 @@
 
     tiles.forEach(function(selectedTile) {
         selectedTile.addEventListener('click', function() {
-            // code for each tile here.
-            console.log("tile clicked = ", selectedTile.id);
-
             const emptyTile = document.querySelector('.empty');
    
             swap(selectedTile, emptyTile);
@@ -38,16 +37,9 @@
         let emptyTop = emptyTileStyles.getPropertyValue('top').slice(0, -2);
         let emptyLeft = emptyTileStyles.getPropertyValue('left').slice(0, -2);
 
-        // console.log("top = ", parseInt(emptyTop));
-        // console.log("left = ", parseInt(emptyLeft)); 
-
         let tileStyles = window.getComputedStyle(selectedTile);
-
         let selectedTop = tileStyles.getPropertyValue('top').slice(0, -2);
         let selectedLeft = tileStyles.getPropertyValue('left').slice(0, -2);
-
-        // console.log("top selected = ", parseInt(selectedTop));
-        // console.log("left selected = ", parseInt(selectedLeft));
 
         if (Math.abs(parseInt(emptyTop) - parseInt(selectedTop)) === 200 && parseInt(emptyLeft) === parseInt(selectedLeft)) {
             // selected tile is swappable
@@ -56,18 +48,23 @@
             selectedTile.style.top = emptyTop + 'px';
             emptyTile.style.top = temp;
 
-            gameWon(tiles); // check if game is won each time you swap 
+            selectedTile.ontransitionend = function() {
+                gameWon();
+            }
 
         } else if (Math.abs(parseInt(emptyLeft) - parseInt(selectedLeft)) === 200 && parseInt(emptyTop) === parseInt(selectedTop)) {
             let temp = selectedLeft + 'px';
             selectedTile.style.left = emptyLeft + 'px';
             emptyTile.style.left = temp;
 
-            gameWon(tiles); // check if game is won each time you swap
+            selectedTile.ontransitionend = function() {
+                gameWon();
+            }
         }
     }
 
-    function gameWon(tiles) {
+    function gameWon() {
+
         let win = true;
 
         for (let tile of tiles) {
@@ -75,23 +72,19 @@
             let selectedTop = parseInt(tileStyles.getPropertyValue('top').slice(0, -2));
             let selectedLeft = parseInt(tileStyles.getPropertyValue('left').slice(0, -2));
 
-            console.log("seleected top = ", selectedTop);
-            console.log("selected left = ", selectedLeft);
-
-            console.log("game map 0 = ", gameMap[tile.id][0]);
-            console.log("game map 1 = ", gameMap[tile.id][1]);
-
             if (!(gameMap[tile.id][0] === selectedTop && gameMap[tile.id][1] === selectedLeft)) {
-                win = false; // this tile is in the right place
-                console.log("breaking");
+                win = false; // this tile is in the wrong place
                 break;
             }
         }
 
         if (win) {
-            console.log("Game won!");
-        } else {
-            console.log("Sorry you lost.");
+            overlay.classList.remove('hide');
+            gameOverMessage.textContent = 'You win!';
+
+            setTimeout(() => {
+                overlay.classList.add('hide');
+            }, 1500);
         }
     }
 })();

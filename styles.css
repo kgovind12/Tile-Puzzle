@@ -3,6 +3,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Rowdies', cursive;
+    color: rgb(75, 75, 75);
 }
 
 .puzzle {
@@ -10,6 +14,8 @@ body {
     height: 800px;
     background-color: gray;
     position: relative;
+    border-radius: 5px;
+    border: 3px solid rgb(186, 142, 62);
 }
 
 .square {
@@ -20,12 +26,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 1s;
+    transition: all 300ms;
     cursor: pointer;
+    border: 2px solid gray;
+    font-size: 2em;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .square.empty {
-    background-color: rgb(127, 218, 138);
+    opacity: 0;
 }
 
 #x-1-1 { top: 0; left: 0; }
@@ -45,3 +55,27 @@ body {
 #x-4-3 { top: calc(800px / 4 * 3); left: calc(800px / 4 * 2); }
 #x-4-4 { top: calc(800px / 4 * 3); left: calc(800px / 4 * 3); }
 
+/* Overlay */
+.overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.8);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 500ms;
+}
+
+.game-over-message {
+    font-size: 3em;
+    color: green;
+}
+
+.hide {
+    opacity: 0;
+}
