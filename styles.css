@@ -48,7 +48,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 500ms;
+    transition: all 350ms;
     cursor: pointer;
     border: 2px solid var(--puzzle-bg);
     font-size: 2em;
